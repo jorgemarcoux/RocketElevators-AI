@@ -3,7 +3,7 @@
 Chatbot with Google DialogFlow
 
 -	Created chatbot app on Slack
--	Created agent, intents, paramaters, functions on DialogFlow
+-	Created agent, intents, parameters, functions on DialogFlow
 -	Enabled Slack integration on DialogFlow
 -	Added all necessary connections between Slack and DialogFlow
 
