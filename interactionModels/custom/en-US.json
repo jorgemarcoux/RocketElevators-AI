@@ -100,9 +100,49 @@
           "samples": [
             "what is the status of battery {id}"
           ]
+        },
+        {
+          "name": "changeElevatorStatus",
+          "slots": [
+            {
+              "name": "id",
+              "type": "AMAZON.NUMBER"
+            },
+            {
+              "name": "status",
+              "type": "status"
+            }
+          ],
+          "samples": [
+            "change elevator {id} status to {status}"
+          ]
         }
       ],
-      "types": [],
+      "types": [
+        {
+          "values": [
+            {
+              "name": {
+                "value": "Intervention"
+              }
+            },
+            {
+              "name": {
+                "value": "Inactive"
+              }
+            },
+            {
+              "name": {
+                "value": "ACTIVE",
+                "synonyms": [
+                  "Active"
+                ]
+              }
+            }
+          ],
+          "name": "status"
+        }
+      ],
       "modelConfiguration": {
         "fallbackIntentSensitivity": {
           "level": "LOW"
@@ -110,5 +150,5 @@
       }
     }
   },
-  "version": "12"
+  "version": "13"
 }

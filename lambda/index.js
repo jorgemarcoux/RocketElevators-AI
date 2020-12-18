@@ -131,105 +131,35 @@ const GetBatteryStatus ={
 };
 
 
-// const ChangeElevatorStatusHandler = {
-//     canHandle(handlerInput){
-//         return (
-//             handlerInput.requestEnvelope.request.type === "IntentRequest" &&
-//             handlerInput.requestEnvelope.request.intent.name === "changeElevatorStatus"
-//         );
-//     },
-//     async handle(handlerInput){
-//         const elevatorID =
-//             handlerInput.requestEnvelope.request.intent.slots.id.value;
+const ChangeElevatorStatusHandler = {
+    canHandle(handlerInput){
+        return (
+            handlerInput.requestEnvelope.request.type === "IntentRequest" &&
+            handlerInput.requestEnvelope.request.intent.name === "changeElevatorStatus"
+        );
+    },
+    async handle(handlerInput){
+        const elevatorID = handlerInput.requestEnvelope.request.intent.slots.id.value;
             
-//         const elevatorStatus = 
-//             handlerInput.requestEnvelope.request.intent.slots.status.value;
+        const elevatorStatus = handlerInput.requestEnvelope.request.intent.slots.status.value;
             
-//         var result = await httpPutElevatorStatus(elevatorID, elevatorStatus);
-        
-//         let statusSpeak = result;
-        
-//         return handlerInput.responseBuilder
-//             .speak(statusSpeak)
-//             .reprompt()
-//             .getResponse();
-//     }
-// };
-
-
-// async function httpPutElevatorStatus(elevatorID, elevatorStatus) {
-//     return new Promise((resolve,reject) => {
-//         const putElevatorData = `{"id": "${elevatorID}","status":"${elevatorStatus}"}`
-//         console.log(elevatorID,elevatorStatus);
-    
-//         var options = {
-//             host: "https://codeboxx-alexa.azurewebsites.net", // this is the host name
-//             path: `api/Elevator/${elevatorID}`, // this is the path
-//             headers: {
-//                 "Content-Type": "application/json",
-//                 "Content-Length": Buffer.byteLength(putElevatorData)
-//             },
-            
-//             method: "PUT"
-//         };
-        
-//         // const options = await getRemoteData(`https://codeboxx-alexa.azurewebsites.net/api/Elevator`);
-//         // const elev_options =  Object.keys(JSON.parse(options)).id;
-        
-//         var request = http.request(options, res => {
-//             var responseString = "";
-//             res.on("data", chunk =>{
-//                 responseString = responseString + chunk;
-//             });
-//             res.on("end",() =>{
-//                 console.log("Received response " + responseString);
-//                 resolve(responseString);
-//             });
-//             res.on("error", e => {
-//                 console.log("ERROR " + e);
-//                 reject();
-//             });
-            
-//         });
-//         request.write(putElevatorData);
-//         request.end();
-//     });
-// }
-
-
-
-
-
-
-
-
-// const HelloWorldIntentHandler = {
-//     canHandle(handlerInput) {
-//         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-//             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'HelloWorldIntent';
-//     },
-//     handle(handlerInput) {
-//         const speakOutput = 'Hello World!';
-//         return handlerInput.responseBuilder
-//             .speak(speakOutput)
-//             //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
-//             .getResponse();
-//     }
-// };
-const getRemoteData = function(url) {
-  return new Promise((resolve, reject) => {
-    const client = url.startsWith("https") ? require("https") : require("http");
-    const request = client.get(url, response => {
-      if (response.statusCode < 200 || response.statusCode > 299) {
-        reject(new Error("Failed with status code: " + response.statusCode));
-      }
-      const body = [];
-      response.on("data", chunk => body.push(chunk));
-      response.on("end", () => resolve(body.join("")));
-    });
-    request.on("error", err => reject(err));
-  });
+        // var result = await httpPutElevatorStatus(elevatorID, elevatorStatus);
+        const object = {elevator_status : elevatorStatus}
+        let outputSpeech = ""
+        await putRemoteElevator(elevatorID, object)
+            .then((response) => {
+                outputSpeech = response;
+            })
+            .catch((err) => {
+                outputSpeech = `Elevator with ID #${elevatorID} does not currently exist - therefore it can't be started nor stopped ${err}.`
+            });
+        return handlerInput.responseBuilder
+            .speak(outputSpeech)
+            .reprompt()
+            .getResponse();
+    }
 };
+
 const HelpIntentHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
@@ -256,6 +186,48 @@ const CancelAndStopIntentHandler = {
             .getResponse();
     }
 };
+const getRemoteData = function(url) {
+  return new Promise((resolve, reject) => {
+    const client = url.startsWith("https") ? require("https") : require("http");
+    const request = client.get(url, response => {
+      if (response.statusCode < 200 || response.statusCode > 299) {
+        reject(new Error("Failed with status code: " + response.statusCode));
+      }
+      const body = [];
+      response.on("data", chunk => body.push(chunk));
+      response.on("end", () => resolve(body.join("")));
+    });
+    request.on("error", err => reject(err));
+  });
+};
+
+const putRemoteElevator = function(elevatorID,putData) {
+  return new Promise((resolve, reject) => {
+    var options = {
+            host: "codeboxx-alexa.azurewebsites.net", // this is the host name
+            path: `/api/Elevator/${elevatorID}`, // this is the path
+            headers: {
+                "Content-Type": "application/json"
+            },
+            
+            method: "PUT"
+    };
+        
+    const request = http.request(options, response => {
+        
+      if (response.statusCode < 200 || response.statusCode > 299) {
+        reject(new Error("Failed with status code: " + response.statusCode));
+      }
+      const body = [];
+      response.on("data", chunk => body.push(chunk));
+      response.on("end", () => resolve(body.join("")));
+    });
+    request.on("error", err => reject(err));
+    request.write(JSON.stringify(putData));
+    request.end();
+  });
+};
+
 /* *
  * FallbackIntent triggers when a customer says something that doesn't map to any intents in your skill
  * It must also be defined in the language model (if the locale supports it)
@@ -337,6 +309,7 @@ exports.handler = Alexa.SkillBuilders.custom()
         GetElevatorStatus,
         GetColumnStatus,
         GetBatteryStatus,
+        ChangeElevatorStatusHandler,
         HelpIntentHandler,
         CancelAndStopIntentHandler,
         FallbackIntentHandler,
