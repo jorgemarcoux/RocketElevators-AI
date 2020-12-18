@@ -114,6 +114,17 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
       agent.add('Battery id ' + agent.parameters.batteryid + ' status: '+ result.data.battery_status); 
     });
   }
+  
+//   function changeElevatorStatus(agent) {
+//     	//const Id = agent.parameters.elevatorId;
+//      	//const ElevatorStatus = agent.parameters.elevatorStatus;
+//     	const data = [{
+//           "id": 2,
+//           "elevatorStatus": "INACTIVE"
+//         }];
+//      	return axios.put('https://samcoutinhoapi.azurewebsites.net/api/elevators/status/2', data); 
+//     	//agent.add('Status');
+//     }  
      
   
   
@@ -127,6 +138,6 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   intentMap.set('ColumnStatus', columnstatus);
   intentMap.set('fulladdress', fulladdress);
   intentMap.set('batterystatus', batterystatus);
-  //intentMap.set('Change Elevator Status', changeElevatorStatus);  
+//   intentMap.set('Change Elevator Status', changeElevatorStatus);  
   agent.handleRequest(intentMap);
 });
