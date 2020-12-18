@@ -1,0 +1,114 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      "invocationName": "rocket elevators",
+      "intents": [
+        {
+          "name": "AMAZON.CancelIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": []
+        },
+        {
+          "name": "HelloWorldIntent",
+          "slots": [],
+          "samples": [
+            "hello",
+            "how are you",
+            "say hi world",
+            "say hi",
+            "hi",
+            "say hello world",
+            "say hello"
+          ]
+        },
+        {
+          "name": "AMAZON.NavigateHomeIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.FallbackIntent",
+          "samples": []
+        },
+        {
+          "name": "RocketElevatorsInfoIntent",
+          "slots": [],
+          "samples": [
+            "try"
+          ]
+        },
+        {
+          "name": "GetRemoteDataIntent",
+          "slots": [],
+          "samples": [
+            "test"
+          ]
+        },
+        {
+          "name": "whatIsGoingOn",
+          "slots": [],
+          "samples": [
+            "What is going on at Rocket Elevators"
+          ]
+        },
+        {
+          "name": "LeadsInfoIntent",
+          "slots": [],
+          "samples": [
+            "Show me last leads",
+            "Alexa show me the leads in the last thirty days"
+          ]
+        },
+        {
+          "name": "getElevatorStatus",
+          "slots": [
+            {
+              "name": "id",
+              "type": "AMAZON.NUMBER"
+            }
+          ],
+          "samples": [
+            "What is the status of elevator {id}"
+          ]
+        },
+        {
+          "name": "getColumnStatus",
+          "slots": [
+            {
+              "name": "id",
+              "type": "AMAZON.NUMBER"
+            }
+          ],
+          "samples": [
+            "What is the status of column {id}"
+          ]
+        },
+        {
+          "name": "getBatteryStatus",
+          "slots": [
+            {
+              "name": "id",
+              "type": "AMAZON.NUMBER"
+            }
+          ],
+          "samples": [
+            "what is the status of battery {id}"
+          ]
+        }
+      ],
+      "types": [],
+      "modelConfiguration": {
+        "fallbackIntentSensitivity": {
+          "level": "LOW"
+        }
+      }
+    }
+  },
+  "version": "12"
+}
