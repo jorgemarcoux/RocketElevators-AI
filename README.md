@@ -1,5 +1,19 @@
 # RocketElevators-AI
 
+Alexa Skill
+
+
+
+Questions that we can ask Alexa (always have to type rocket elevators to start the program)
+
+1.	What’s going on at Rocket Elevators?
+2.	what is the status of battery id (1)
+3.	what is the status of column id (1)
+4.	what is the status of elevator id (1)
+5.	change elevator id (1) status to status (ACTIVE, Intervention, Inactive)
+6.	
+
+
 Chatbot with Google DialogFlow
 
 -	Created chatbot app on Slack
